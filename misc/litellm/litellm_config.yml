@@ -1,0 +1,10 @@
+model_list:
+  - model_name: mock
+    litellm_params:
+      model: openai/mock
+      api_base: http://mockai:8100/openai
+      api_key: "None"
+  - model_name: llama-3.3-70b
+    litellm_params:
+      model: groq/llama-3.3-70b-versatile
+      api_key: "os.environ/GROQ_API_KEY"

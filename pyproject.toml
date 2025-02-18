@@ -1,0 +1,84 @@
+[project]
+name = "rag"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [{ name = "ajac-zero", email = "ajcardoza2000@gmail.com" }]
+requires-python = ">=3.13"
+dependencies = [
+  "fastapi[standard]>=0.115.8",
+  "langfuse>=2.59.1",
+  "openai>=1.61.1",
+  "pydantic-settings>=2.7.1",
+  "qdrant-client[fastembed]>=1.13.2",
+]
+
+[dependency-groups]
+dev = [
+  "marimo>=0.11.5",
+  "mypy>=1.15.0",
+  "pydeps>=3.0.1",
+  "pytest>=8.3.4",
+  "pytest-asyncio>=0.25.3",
+  "pytest-cov>=6.0.0",
+  "pytest-sugar>=1.0.0",
+  "ruff>=0.9.6",
+  "testcontainers[qdrant]>=4.9.1",
+]
+
+[project.scripts]
+rag-cli = "rag.entrypoints:cli"
+rag-api = "rag.entrypoints:api"
+
+[tool.ruff]
+extend-exclude = ["tests", "misc"]
+
+[tool.ruff.lint]
+select = [
+  "B",
+  "D",
+  "E",
+  "F",
+  "FAST",
+  "I",
+  "N",
+  "PERF",
+  "PL",
+  "RUF",
+  "SIM",
+  "TID",
+  "W",
+]
+ignore = ["E501"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+
+[tool.mypy]
+ignore_missing_imports = true
+plugins = ["pydantic.mypy"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.coverage.run]
+omit = ["*/_protocol.py", "*/types.py"]
+
+[tool.pydeps]
+rankdir = "BT"
+cluster = true
+max_bacon = 2
+rmprefix = ["rag.components.search.", "rag.components.inference.", "rag."]
+exclude_exact = ["rag.components", "rag.types"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rag"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

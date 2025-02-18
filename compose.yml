@@ -1,0 +1,14 @@
+services:
+  litellm:
+    image: ghcr.io/berriai/litellm:main-latest
+    ports:
+      - 4000:4000
+    volumes:
+      - ./misc/litellm/litellm_config.yml:/app/litellm_config.yml
+    env_file:
+      - .env
+    command: ["--config", "/app/litellm_config.yml"]
+  mockai:
+    image: ajaczero/mock-ai:latest
+    ports:
+      - 8100:8100
