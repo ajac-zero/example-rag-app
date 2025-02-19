@@ -27,8 +27,8 @@ dev = [
 ]
 
 [project.scripts]
-rag-cli = "rag.entrypoints:cli"
-rag-api = "rag.entrypoints:api"
+cli = "rag.entrypoints:cli"
+api = "rag.entrypoints:api"
 
 [tool.ruff]
 extend-exclude = ["tests", "misc"]
