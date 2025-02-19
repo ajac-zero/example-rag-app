@@ -17,10 +17,8 @@ app = Typer()
 
 
 @app.command()
-def chat(
-    model: Annotated[
-        str, Option("-m", "--model", help="The LLM model to use during the chat")
-    ] = "mock",
+def chat(  # pragma: no cover
+    model: Annotated[str, Option("-m", "--model", help="The LLM to use")] = "mock",
 ):
     """Start an interactive chat session with a RAG LLM."""
     agent = Agent(model=model)

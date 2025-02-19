@@ -12,7 +12,7 @@ from rich.markdown import Markdown
 from rag.types import Agent
 
 
-class ChatUI:
+class ChatUI:  # pragma: no cover
     """The terminal user interface for the CLI app."""
 
     def __init__(self, agent: Agent):

@@ -61,7 +61,7 @@ async def send_messages(data: Data, stream: bool = False):
         return JSONResponse({"response": buffer})
 
 
-def api():
+def api():  # pragma: no cover
     """Run the FastAPI app using uvicorn."""
     host = os.environ.get("HOST", "0.0.0.0")
     port = os.environ.get("PORT", "8000")
