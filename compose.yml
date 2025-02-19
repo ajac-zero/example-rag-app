@@ -1,13 +1,25 @@
 services:
+  rag:
+    build: .
+    image: rag-container:latest
+    ports:
+      - 8000:8000
+    environment:
+      OPENAI_URL: http://litellm:4000
+      QDRANT_URL: http://qdrant:6333
+    depends_on:
+      - litellm
   litellm:
     image: ghcr.io/berriai/litellm:main-latest
     ports:
       - 4000:4000
     volumes:
       - ./misc/litellm/litellm_config.yml:/app/litellm_config.yml
-    env_file:
-      - .env
+    environment:
+      GROQ_API_KEY: ${GROQ_API_KEY}
     command: ["--config", "/app/litellm_config.yml"]
+    depends_on:
+      - mockai
   mockai:
     image: ajaczero/mock-ai:latest
     ports:
