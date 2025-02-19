@@ -51,20 +51,20 @@
 <!-- openai -->
 <g id="node3" class="node">
 <title>openai</title><style>.edge>path:hover{stroke-width:8}</style>
-<polygon fill="#9fb83d" stroke="black" points="201,-145 198,-149 177,-149 174,-145 147,-145 147,-109 201,-109 201,-145"/>
+<polygon fill="#a6c040" stroke="black" points="201,-145 198,-149 177,-149 174,-145 147,-145 147,-109 201,-109 201,-145"/>
 <text text-anchor="middle" x="174" y="-124.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#000000">openai</text>
 </g>
 <!-- rag_components_inference_openai_inference -->
 <g id="node9" class="node">
 <title>rag_components_inference_openai_inference</title><style>.edge>path:hover{stroke-width:8}</style>
-<ellipse fill="#3865a8" stroke="black" cx="204" cy="-310" rx="59.41" ry="18"/>
+<ellipse fill="#3d6eb8" stroke="black" cx="204" cy="-310" rx="59.41" ry="18"/>
 <text text-anchor="middle" x="204" y="-307.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#ffffff">openai_inference</text>
 </g>
 <!-- openai&#45;&gt;rag_components_inference_openai_inference -->
 <g id="edge3" class="edge">
 <title>openai&#45;&gt;rag_components_inference_openai_inference</title><style>.edge>path:hover{stroke-width:8}</style>
 <path fill="none" stroke="black" d="M176.82,-145.03C182.03,-176.43 193.17,-243.69 199.46,-281.58"/>
-<polygon fill="#9fb83d" stroke="black" points="196.08,-282.59 201.16,-291.89 202.98,-281.45 196.08,-282.59"/>
+<polygon fill="#a6c040" stroke="black" points="196.08,-282.59 201.16,-291.89 202.98,-281.45 196.08,-282.59"/>
 </g>
 <!-- pydantic -->
 <g id="node4" class="node">
@@ -170,7 +170,7 @@
 <g id="edge12" class="edge">
 <title>rag_components_inference_openai_inference&#45;&gt;rag_components_inference</title><style>.edge>path:hover{stroke-width:8}</style>
 <path fill="none" stroke="black" d="M204.47,-328.35C204.68,-335.93 204.93,-345.04 205.17,-353.69"/>
-<polygon fill="#3865a8" stroke="black" points="201.67,-353.97 205.44,-363.87 208.67,-353.78 201.67,-353.97"/>
+<polygon fill="#3d6eb8" stroke="black" points="201.67,-353.97 205.44,-363.87 208.67,-353.78 201.67,-353.97"/>
 </g>
 <!-- rag_components_search -->
 <g id="node10" class="node">
