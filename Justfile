@@ -1,13 +1,10 @@
 set dotenv-load
 
-cli:
-  @uv run rag-cli
+run entrypoint *ARGS:
+  @docker compose run --rm rag {{entrypoint}} {{ARGS}}
 
-api:
-  @uv run rag-api
-
-test:
-  @uv run pytest --cov=src/ --cov-report term-missing
+test tests="":
+  @uv run pytest tests/{{tests}} --cov=src/ --cov-report term-missing
 
 tidy:
   @echo "Linting..."
@@ -17,12 +14,16 @@ tidy:
   @uv run ruff format
 
 type-check:
+  @echo "Type checking..."
   @uv run mypy src/
 
 graph:
-  @uv run pydeps src/rag/
+  @echo "Creating dependency graph..."
+  @uv run pydeps src/rag/ -o dependency-graph.svg
 
 ci:
   just tidy
+  @echo
   just type-check
+  @echo
   just test
