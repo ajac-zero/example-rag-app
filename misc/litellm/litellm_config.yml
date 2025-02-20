@@ -8,3 +8,22 @@ model_list:
     litellm_params:
       model: groq/llama-3.3-70b-versatile
       api_key: "os.environ/GROQ_API_KEY"
+  - model_name: text-embedding-3-large
+    litellm_params:
+      model: azure/text-embedding-3-large
+      api_base: "os.environ/AZURE_OPENAI_ENDPOINT"
+      api_key: "os.environ/AZURE_OPENAI_API_KEY"
+      api_version: "os.environ/AZURE_OPENAI_API_VERSION"
+  - model_name: gpt-4-turbo
+    litellm_params:
+      model: azure/gpt-4-turbo
+      api_base: "os.environ/AZURE_OPENAI_ENDPOINT"
+      api_key: "os.environ/AZURE_OPENAI_API_KEY"
+      api_version: "os.environ/AZURE_OPENAI_API_VERSION"
+
+litellm_settings:
+  success_callback: ["langfuse"]
+  cache: true
+  cache_params:
+    type: redis
+    namespace: "litellm.caching.caching"

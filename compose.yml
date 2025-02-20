@@ -9,6 +9,18 @@ services:
       QDRANT_URL: http://qdrant:6333
     depends_on:
       - litellm
+      - qdrant
+    profiles: ["full"]
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - 6333:6333
+      - 6334:6334
+    volumes:
+      - ./misc/qdrant/volume/:/qdrant/storage:z
+    profiles: ["full", "infra"]
+
   litellm:
     image: ghcr.io/berriai/litellm:main-latest
     ports:
@@ -16,11 +28,29 @@ services:
     volumes:
       - ./misc/litellm/litellm_config.yml:/app/litellm_config.yml
     environment:
+      # Models
       GROQ_API_KEY: ${GROQ_API_KEY}
+      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT}
+      AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY}
+      AZURE_OPENAI_API_VERSION: ${AZURE_OPENAI_API_VERSION}
+
+      # Logging
+      LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY}
+      LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY}
+      LANGGUSE_HOST: ${LANGFUSE_HOST}
+
+      # Caching
+      REDIS_URL: ${REDIS_URL:-redis://:myredissecret@redis:6379}
     command: ["--config", "/app/litellm_config.yml"]
     depends_on:
       - mockai
+    profiles: ["full", "infra"]
+
   mockai:
     image: ajaczero/mock-ai:latest
     ports:
       - 8100:8100
+    profiles: ["full", "infra"]
+
+include:
+  - misc/langfuse/compose.yml

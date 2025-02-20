@@ -27,3 +27,11 @@ ci:
   just type-check
   @echo
   just test
+
+scaffold:
+  @echo "Scaffolding infrastructure..."
+  @docker compose --profile infra up -d
+
+teardown:
+  @echo "Tearing down infrastructure..."
+  @docker compose --profile infra down
