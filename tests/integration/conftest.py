@@ -12,20 +12,7 @@ from rag.components.inference import OpenAIInference
 from rag.components.search import QdrantSearch
 
 
-@pytest.fixture(scope="module")
-def mockai():
-    with ServerContainer(8100, "ajaczero/mock-ai") as container:
-        wait_for_logs(container, "Uvicorn running")
-        yield container.get_exposed_port(8100)
-
-
-@pytest.fixture(scope="function")
-def openai_inference(mockai: int):
-    return OpenAIInference(
-        api_key="mock-api-key", base_url=f"http://localhost:{mockai}/openai"
-    )
-
-
+# Constants; These are in a fixture for easy access in other tests
 @pytest.fixture(scope="module")
 def docs():
     return [
@@ -33,6 +20,14 @@ def docs():
         "The car was a Honda Accord. It was made in Japan.",
         "I was gifted a rare book. It was written by Charles Dickens.",
     ]
+
+
+# Testcontainers
+@pytest.fixture(scope="module")
+def mockai():
+    with ServerContainer(8100, "ajaczero/mock-ai") as container:
+        wait_for_logs(container, "Uvicorn running")
+        yield container.get_exposed_port(8100)
 
 
 @pytest.fixture(scope="module")
@@ -75,11 +70,19 @@ def qdrant(docs: list[str]):
         yield container.get_exposed_port(6333)
 
 
+# Clients
+@pytest.fixture(scope="function")
+def openai_inference(mockai: int):
+    return OpenAIInference(
+        api_key="mock-api-key", base_url=f"http://localhost:{mockai}/openai"
+    )
+
 @pytest.fixture(scope="function")
 async def qdrant_search(qdrant: str):
     return QdrantSearch(collection="Wikipedia", url=f"http://localhost:{qdrant}")
 
 
+# Agent
 @pytest.fixture(scope="function")
 def agent(qdrant_search: QdrantSearch, openai_inference: OpenAIInference):
     return Agent(model="mock", _inference=openai_inference, _search=qdrant_search)

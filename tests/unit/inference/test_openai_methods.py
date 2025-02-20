@@ -1,7 +1,4 @@
-from rag.components.inference import OpenAIInference
-
-
-async def test_generate_stream(openai_inference: OpenAIInference):
+async def test_generate_stream(openai_inference):
     buffer = ""
 
     response = openai_inference.generate_stream(
@@ -18,7 +15,7 @@ async def test_generate_stream(openai_inference: OpenAIInference):
     assert buffer == "Hello, world!"
 
 
-async def test_generate_embedding(openai_inference: OpenAIInference):
+async def test_generate_embedding(openai_inference):
     response = await openai_inference.generate_embedding(
         text="Hello",
         model="test",

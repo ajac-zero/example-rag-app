@@ -1,7 +1,4 @@
-from rag.components.inference import OpenAIInference
-
-
-async def test_openai_inference(openai_inference: OpenAIInference):
+async def test_openai_inference(openai_inference):
     response = openai_inference.generate_stream(
         messages=[{"role": "user", "content": "hello"}],
         model="gpt-3.5-turbo",
@@ -19,7 +16,7 @@ async def test_openai_inference(openai_inference: OpenAIInference):
     assert buffer == "hi!"
 
 
-async def test_openai_inference_tool_call(openai_inference: OpenAIInference):
+async def test_openai_inference_tool_call(openai_inference):
     content = "hello"
 
     response = openai_inference.generate_stream(

@@ -1,15 +1,10 @@
-import pytest
-
 from rag import config
 from rag.components import inference, search
 
 
-@pytest.fixture(scope="module")
-def settings():
-    return config.Settings()
+settings = config.Settings()
 
-
-def test_settings(settings: config.Settings):
+def test_settings():
     assert settings.qdrant_collection == "Wikipedia"
     assert str(settings.qdrant_url) == "http://localhost:6333/"
     assert settings.qdrant_api_key is None
