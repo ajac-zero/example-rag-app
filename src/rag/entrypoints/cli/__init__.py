@@ -32,7 +32,7 @@ def chat(  # pragma: no cover
             tui.print_welcome_message()
             while True:
                 tui.get_user_input(messages)
-                await tui.display_assistant_ouput(messages)
+                await tui.display_assistant_output(messages)
         except SystemExit as err:
             raise Exit() from err
 

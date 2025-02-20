@@ -44,7 +44,7 @@ class ChatUI:  # pragma: no cover
 
         messages.append({"role": "user", "content": user_input})
 
-    async def display_assistant_ouput(self, messages: list) -> None:
+    async def display_assistant_output(self, messages: list) -> None:
         """Display the assistant's output in the console."""
         self.console.print("\n[bold green]Assistant:[/]")
 
