@@ -62,8 +62,8 @@ TOOLS = [
                         "description": "Relevant keywords to narrow down the search with BM25 search.",
                         "items": {"type": "string"},
                     },
-                    "required": ["query", "keywords"],
                 },
+                "required": ["query", "keywords"],
             },
         },
     },
@@ -79,8 +79,8 @@ TOOLS = [
                         "type": "string",
                         "description": "The query that will be converted to an embedding and used in semantic search.",
                     },
-                    "required": ["query"],
                 },
+                "required": ["query"],
             },
         },
     },
@@ -97,8 +97,8 @@ TOOLS = [
                         "description": "Relevant keywords to narrow down the search with BM25 search.",
                         "items": {"type": "string"},
                     },
-                    "required": ["keywords"],
                 },
+                "required": ["keywords"],
             },
         },
     },
@@ -114,6 +114,7 @@ class Agent:
     def __init__(
         self,
         model: str,
+        embedding_model: str | None = None,
         _inference: types.InferenceProtocol | None = None,
         _search: types.SearchProtocol | None = None,
     ) -> None:
@@ -121,11 +122,13 @@ class Agent:
 
         Args:
             model (str): The model to use for inference, as defined in the litellm config.
+            embedding_model (str, optional): The model to use for embedding generation. Defaults to "text-embedding-3-large".
             _inference (InferenceProtocol, optional): The inference component to use to generate embeddings and chat completions.
             _search (SearchProtocol, optional): The search component to use to generate search results.
 
         """
         self.model = model
+        self.embedding_model = embedding_model or "text-embedding-3-large"
         self.inference = _inference or config.get_openai()
         self.search = _search or config.get_qdrant()
 
@@ -140,7 +143,7 @@ class Agent:
     ):
         """Pipeline to perform a hybrid search and build a string template."""
         query_embedding = await self.inference.generate_embedding(
-            text=query, model=self.model
+            text=query, model=self.embedding_model
         )
 
         search_results = await self.search.hybrid_search(
@@ -154,7 +157,7 @@ class Agent:
     async def _semantic_search_pipeline(self, query: str, limit: int = 25):
         """Pipeline to perform a semantic search and build a string template."""
         query_embedding = await self.inference.generate_embedding(
-            text=query, model=self.model
+            text=query, model=self.embedding_model
         )
 
         search_results = await self.search.semantic_search(
@@ -223,7 +226,7 @@ class Agent:
         messages.append(assistant_message)
 
         async for chunk in self.inference.generate_stream(
-            messages, model=self.model, tools=self.tools, **kwargs
+            messages[:-1], model=self.model, tools=self.tools, **kwargs
         ):
             if content := chunk["content"]:
                 if "content" not in assistant_message:
@@ -248,3 +251,6 @@ class Agent:
                             "content": result,
                         }
                     )
+
+                async for content in self.generate(messages):
+                    yield content

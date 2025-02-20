@@ -57,6 +57,7 @@ async def test_generate(docs: list[str], agent: Agent):
     async for _ in agent.generate(messages, extra_headers=extra_headers): # type: ignore[arg-type]
         continue
 
+    messages.pop()
 
     assert len(messages) == 3
 
