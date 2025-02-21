@@ -6,12 +6,13 @@
 #     "marimo",
 #     "openai==1.63.2",
 #     "qdrant-client==1.13.2",
+#     "sentence-transformers==3.4.1",
 # ]
 # ///
 
 import marimo
 
-__generated_with = "0.11.0"
+__generated_with = "0.11.7"
 app = marimo.App(width="medium")
 
 
@@ -33,10 +34,30 @@ def _(mo, run_button):
     mo.stop(not run_button.value)
 
     from datasets import load_dataset
+    from openai import OpenAI
+    from qdrant_client import QdrantClient, models
+    from sentence_transformers import SentenceTransformer
 
+    openai = OpenAI(base_url="http://localhost:4000", api_key="none_but_required")
+    qdrant = QdrantClient(url="http://localhost:6333")
+    minilm = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+    return (
+        OpenAI,
+        QdrantClient,
+        SentenceTransformer,
+        load_dataset,
+        minilm,
+        models,
+        openai,
+        qdrant,
+    )
+
+
+@app.cell
+def _(load_dataset):
     ds = load_dataset("wikimedia/wikipedia", "20231101.en", split="train[:100]")
     df = ds.to_pandas()
-    return df, ds, load_dataset
+    return df, ds
 
 
 @app.cell
@@ -97,21 +118,31 @@ def _(df_exploded):
 
 
 @app.cell
-def _():
-    from openai import OpenAI
-
-    openai = OpenAI(base_url="http://localhost:4000", api_key="none_but_required")
-    return OpenAI, openai
-
-
-@app.cell
 def _(openai):
-    def create_embeddings(row):
-        chunk: str = row["chunks"]
-
+    def openai_embed(chunk):
         response = openai.embeddings.create(input=chunk, model="text-embedding-3-large")
 
         embedding = response.data[0].embedding
+
+        return embedding
+    return (openai_embed,)
+
+
+@app.cell
+def _(minilm):
+    def minilm_embed(chunk):
+        return minilm.encode(chunk).tolist()
+    return (minilm_embed,)
+
+
+@app.cell
+def _(minilm_embed):
+    def create_embeddings(row):
+        chunk: str = row["chunks"]
+
+        # This controls the embedding model used in the collection
+        # embedding = openai_embed(chunk)
+        embedding = minilm_embed(chunk)
 
         return embedding
     return (create_embeddings,)
@@ -154,18 +185,10 @@ def _(create_sparse_embeddings, df_exploded):
 
 
 @app.cell
-def _():
-    from qdrant_client import QdrantClient, models
-
-    qdrant = QdrantClient()
-    return QdrantClient, models, qdrant
-
-
-@app.cell
 def _(models, qdrant):
     qdrant.recreate_collection(
         collection_name="Wikipedia",
-        vectors_config={"dense": models.VectorParams(size=3072, distance=models.Distance.COSINE)},
+        vectors_config={"dense": models.VectorParams(size=384, distance=models.Distance.COSINE)}, # You must change the size param to match the dimensions of your embedding model
         sparse_vectors_config={"sparse": models.SparseVectorParams()},
     )
     return
@@ -183,29 +206,27 @@ def _(records):
     return
 
 
-app._unparsable_cell(
-    r"""
-    2points = [
+@app.cell
+def _(models, records):
+    points = [
         models.PointStruct(
             id=id,
             vector={
-                \"dense\": row[\"vectors\"],
-                \"sparse\": {
-                    \"indices\": row[\"sparse_vectors\"][0],
-                    \"values\": row[\"sparse_vectors\"][1],
+                "dense": row["vectors"],
+                "sparse": {
+                    "indices": row["sparse_vectors"][0],
+                    "values": row["sparse_vectors"][1],
                 },
             },
             payload={
-                \"content\": row[\"chunks\"],
-                \"url\": row[\"url\"],
-                \"title\": row[\"title\"],
+                "content": row["chunks"],
+                "url": row["url"],
+                "title": row["title"],
             },
         )
         for id, row in enumerate(records)
     ]
-    """,
-    name="_"
-)
+    return (points,)
 
 
 @app.cell

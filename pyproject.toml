@@ -31,7 +31,7 @@ cli = "rag.entrypoints:cli"
 api = "rag.entrypoints:api"
 
 [tool.ruff]
-extend-exclude = ["tests", "misc"]
+extend-exclude = ["tests", "infra"]
 
 [tool.ruff.lint]
 select = [

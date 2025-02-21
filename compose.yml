@@ -18,7 +18,7 @@ services:
       - 6333:6333
       - 6334:6334
     volumes:
-      - ./misc/qdrant/volume/:/qdrant/storage:z
+      - ./infra/qdrant/volume/:/qdrant/storage:z
     profiles: ["full", "infra"]
 
   litellm:
@@ -26,7 +26,7 @@ services:
     ports:
       - 4000:4000
     volumes:
-      - ./misc/litellm/config.yml:/app/litellm_config.yml
+      - ./infra/litellm/config.yml:/app/litellm_config.yml
     environment:
       # Models
       GROQ_API_KEY: ${GROQ_API_KEY}
@@ -53,4 +53,4 @@ services:
     profiles: ["full", "infra"]
 
 include:
-  - misc/langfuse/compose.yml
+  - infra/langfuse/compose.yml
