@@ -44,6 +44,8 @@ select = [
   "N",
   "PERF",
   "PL",
+  "PTH",
+  "UP",
   "RUF",
   "SIM",
   "TID",
@@ -67,14 +69,20 @@ asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 
 [tool.coverage.run]
-omit = ["*/_protocol.py", "*/types.py"]
+omit = ["*/types/*"]
 
 [tool.pydeps]
 rankdir = "BT"
 cluster = true
 max_bacon = 2
-rmprefix = ["rag.components.search.", "rag.components.inference.", "rag."]
-exclude_exact = ["rag.components", "rag.types"]
+rmprefix = [
+  "rag.components.chat.",
+  "rag.components.embed.",
+  "rag.components.search.",
+  "rag.",
+]
+exclude = ["rag.types"]
+exclude_exact = ["rag.components"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/rag"]
