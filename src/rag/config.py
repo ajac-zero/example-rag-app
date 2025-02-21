@@ -10,9 +10,9 @@ from functools import lru_cache
 from pydantic import HttpUrl
 from pydantic_settings import BaseSettings
 
-from .components import inference, search
+from .components import chat, embed, search
 
-__all__ = ["get_openai", "get_qdrant"]
+__all__ = ["get_openai_chat", "get_openai_embed", "get_qdrant"]
 
 
 class Settings(BaseSettings):
@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     qdrant_url: HttpUrl = HttpUrl("http://localhost:6333")
     qdrant_api_key: str | None = None
 
+    openai_embedding_model: str = "text-embedding-3-large"
     openai_url: HttpUrl = HttpUrl("http://localhost:4000")
     openai_api_key: str = "None"
 
@@ -38,8 +39,18 @@ def get_qdrant() -> search.QdrantSearch:
 
 
 @lru_cache(1)
-def get_openai() -> inference.OpenAIInference:
+def get_openai_chat() -> chat.OpenAIChat:
     """Create an OpenAIInference instance from type-checked environment variables. Instance is cached on first call."""
-    return inference.OpenAIInference(
+    return chat.OpenAIChat(
         base_url=str(settings.openai_url), api_key=settings.openai_api_key
+    )
+
+
+@lru_cache(1)
+def get_openai_embed() -> embed.OpenAIEmbed:
+    """Create an OpenAIEmbed instance from type-checked environment variables. Instance is cached on first call."""
+    return embed.OpenAIEmbed(
+        model=settings.openai_embedding_model,
+        base_url=str(settings.openai_url),
+        api_key=settings.openai_api_key,
     )

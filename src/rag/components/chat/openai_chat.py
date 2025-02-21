@@ -1,21 +1,18 @@
-"""`openai_inference.py` defines the OpenAIInference component.
+"""`inference._openai.py` defines the OpenAI Inference component.
 
-This component uses the OpenAI API to generate embeddings and chat completions.
+This component uses the OpenAI API to generate chat completions.
 It uses the AsyncOpenAI client to interact with the OpenAI API.
 It exposes the following methods:
     - `generate_stream`: Generates a stream of chat completions.
-    - `generate_embedding`: Generates an embedding for a given text.
 """
 
 from openai import AsyncOpenAI
 
-from rag.types import AsyncGenerator, Messages, StreamPart, Tool
-
-__all__ = ["OpenAIInference"]
+from rag.types import Messages, Stream, Tool
 
 
-class OpenAIInference:
-    """OpenAIInference is a component that uses the OpenAI API to generate embeddings and chat completions."""
+class OpenAIChat:
+    """OpenAIChat is an chat component that uses the OpenAI API to generate chat completions."""
 
     def __init__(
         self,
@@ -23,7 +20,7 @@ class OpenAIInference:
         base_url: str | None = None,
         _openai_client_class=AsyncOpenAI,
     ) -> None:
-        """Initialize an OpenAIInference instance.
+        """Initialize an OpenAIChat instance.
 
         Args:
             api_key (str): The API key to use for authentication.
@@ -33,29 +30,7 @@ class OpenAIInference:
         """
         self.openai = _openai_client_class(api_key=api_key, base_url=base_url)
 
-    async def generate_embedding(self, text: str, model: str, **kwargs):
-        """Generate an embedding for a given text.
-
-        Args:
-            text (str): The text to generate the embedding for.
-            model (str): The model to use for the embedding generation.
-            **kwargs: Additional keyword arguments to pass to the OpenAI API.
-
-        Returns:
-            list[float]: The embedding vector.
-
-        """
-        response = await self.openai.embeddings.create(
-            input=text, model=model, **kwargs
-        )
-
-        embedding = response.data[0].embedding
-
-        return embedding
-
-    async def generate_stream(
-        self, messages: Messages, model: str, **kwargs
-    ) -> AsyncGenerator[StreamPart, None]:
+    async def generate_stream(self, messages: Messages, model: str, **kwargs) -> Stream:
         """Generate a stream of chat completions.
 
         Args:

@@ -1,4 +1,4 @@
-"""`qdrant_search.py` defines the QdrantSearch component.
+"""`qdrant_search.py` defines the Qdrant Search component.
 
 This component performs searches on a Qdrant vector database.
 It uses the QdrantClient to interact with the Qdrant API.
@@ -14,11 +14,9 @@ from qdrant_client.http.models import QueryResponse
 
 from rag.types import SearchResult
 
-__all__ = ["QdrantSearch"]
-
 
 class QdrantSearch:
-    """QdrantSearch is a component that performs searches on a Qdrant vector database."""
+    """Qdrant is a Search component that performs searches on a Qdrant vector database."""
 
     def __init__(
         self,
@@ -73,7 +71,7 @@ class QdrantSearch:
 
         """
         text = " ".join(keywords)
-        embedding = next(iter((self.bm25.query_embed(text))))
+        embedding = next(iter(self.bm25.query_embed(text)))
 
         prefetch = [
             models.Prefetch(query=query, using=self.dense_index, limit=limit),
@@ -136,7 +134,7 @@ class QdrantSearch:
 
         """
         text = " ".join(keywords)
-        embedding = next(iter((self.bm25.query_embed(text))))
+        embedding = next(iter(self.bm25.query_embed(text)))
 
         response = await self.qdrant.query_points(
             self.collection,

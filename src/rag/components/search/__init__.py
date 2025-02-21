@@ -3,8 +3,7 @@
 This component group contains components that can perform searches on an external knowledge base (VectorDB).
 
 Components:
-    QdrantSearch: Perform searches on a Qdrant vector database.
-
+    Qdrant: Perform searches on a Qdrant vector database.
 """
 
 from .qdrant_search import QdrantSearch
