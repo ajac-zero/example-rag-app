@@ -1,0 +1,70 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "hybrid_search",
+      "description": "Query the search engine for relevant documents using both semantic and keyword search.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The query that will be converted to an embedding and used in semantic search."
+          },
+          "keywords": {
+            "type": "array",
+            "description": "Relevant keywords to narrow down the search with BM25 search.",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "query",
+          "keywords"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "semantic_search",
+      "description": "Query the search engine for relevant documents using semantic similarity search.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "The query that will be converted to an embedding and used in semantic search."
+          }
+        },
+        "required": [
+          "query"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "keyword_search",
+      "description": "Query the search engine for relevant documents using keyword search.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "keywords": {
+            "type": "array",
+            "description": "Relevant keywords to narrow down the search with BM25 search.",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "keywords"
+        ]
+      }
+    }
+  }
+]
