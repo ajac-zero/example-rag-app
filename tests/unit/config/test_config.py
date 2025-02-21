@@ -1,5 +1,5 @@
 from rag import config
-from rag.components import inference, search
+from rag.components import chat, search, embed
 
 
 settings = config.Settings()
@@ -23,11 +23,21 @@ def test_get_qdrant():
     assert qdrant is second_qdrant
 
 
-def test_get_openai():
-    openai = config.get_openai()
+def test_get_openai_chat():
+    openai = config.get_openai_chat()
 
-    assert isinstance(openai, inference.OpenAIInference)
+    assert isinstance(openai, chat.OpenAIChat)
 
-    second_openai = config.get_openai()
+    second_openai = config.get_openai_chat()
+
+    assert openai is second_openai
+
+
+def test_get_openai_embed():
+    openai = config.get_openai_embed()
+
+    assert isinstance(openai, embed.OpenAIEmbed)
+
+    second_openai = config.get_openai_embed()
 
     assert openai is second_openai

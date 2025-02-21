@@ -8,8 +8,9 @@ from testcontainers.generic import ServerContainer
 from testcontainers.qdrant import QdrantContainer
 
 from rag.agent import Agent
-from rag.components.inference import OpenAIInference
+from rag.components.chat import OpenAIChat
 from rag.components.search import QdrantSearch
+from rag.components.embed import OpenAIEmbed
 
 
 # Constants; These are in a fixture for easy access in other tests
@@ -72,9 +73,15 @@ def qdrant(docs: list[str]):
 
 # Clients
 @pytest.fixture(scope="function")
-def openai_inference(mockai: int):
-    return OpenAIInference(
+def openai_chat(mockai: int):
+    return OpenAIChat(
         api_key="mock-api-key", base_url=f"http://localhost:{mockai}/openai"
+    )
+
+@pytest.fixture(scope="function")
+def openai_embed(mockai: int):
+    return OpenAIEmbed(
+        model="mock-ada", api_key="mock-api-key", base_url=f"http://localhost:{mockai}/openai"
     )
 
 @pytest.fixture(scope="function")
@@ -84,5 +91,5 @@ async def qdrant_search(qdrant: str):
 
 # Agent
 @pytest.fixture(scope="function")
-def agent(qdrant_search: QdrantSearch, openai_inference: OpenAIInference):
-    return Agent(model="mock", _inference=openai_inference, _search=qdrant_search)
+def agent(qdrant_search: QdrantSearch, openai_chat: OpenAIChat, openai_embed: OpenAIEmbed):
+    return Agent(model="mock", _chat=openai_chat, _search=qdrant_search, _embed=openai_embed)

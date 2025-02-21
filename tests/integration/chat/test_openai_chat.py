@@ -1,5 +1,5 @@
-async def test_openai_inference(openai_inference):
-    response = openai_inference.generate_stream(
+async def test_openai_chat(openai_chat):
+    response = openai_chat.generate_stream(
         messages=[{"role": "user", "content": "hello"}],
         model="gpt-3.5-turbo",
         extra_headers={"mock-response": "hi!"},
@@ -16,10 +16,10 @@ async def test_openai_inference(openai_inference):
     assert buffer == "hi!"
 
 
-async def test_openai_inference_tool_call(openai_inference):
+async def test_openai_chat_tool_call(openai_chat):
     content = "hello"
 
-    response = openai_inference.generate_stream(
+    response = openai_chat.generate_stream(
         messages=[{"role": "user", "content": content}],
         model="gpt-3.5-turbo",
         extra_headers={

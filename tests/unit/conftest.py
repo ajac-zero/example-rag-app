@@ -7,13 +7,19 @@ from openai.types.chat.chat_completion_chunk import (
 from qdrant_client.http.models import QueryResponse, ScoredPoint
 
 from rag.agent import Agent
-from rag.components.inference import OpenAIInference
+from rag.components.chat import OpenAIChat
 from rag.components.search import QdrantSearch
+from rag.components.embed import OpenAIEmbed
 
 
 @pytest.fixture(scope="module")
-def openai_inference():
-    return OpenAIInference(api_key="", _openai_client_class=FakeAsyncOpenAI)  # type: ignore
+def openai_chat():
+    return OpenAIChat(api_key="", _openai_client_class=FakeAsyncOpenAI)  # type: ignore
+
+
+@pytest.fixture(scope="module")
+def openai_embed():
+    return OpenAIEmbed(model="mock-ada", api_key="", _openai_client_class=FakeAsyncOpenAI)  # type: ignore
 
 
 @pytest.fixture(scope="module")
@@ -27,10 +33,11 @@ def qdrant_search():
 
 
 @pytest.fixture(scope="module")
-def agent(openai_inference: OpenAIInference, qdrant_search: QdrantSearch):
+def agent(openai_chat: OpenAIChat, qdrant_search: QdrantSearch, openai_embed: OpenAIEmbed):
     agent = Agent(model="test")
-    agent.inference = openai_inference
+    agent.chat = openai_chat
     agent.search = qdrant_search
+    agent.embed = openai_embed
     return agent
 
 
