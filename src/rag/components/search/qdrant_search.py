@@ -25,8 +25,8 @@ class QdrantSearch:
         api_key: str | None = None,
         _dense_index: str = "dense",
         _sparse_index: str = "sparse",
-        _qdrant_client_class=AsyncQdrantClient,
-        _sparse_text_embedding_class=SparseTextEmbedding,
+        _qdrant_client_class: type[AsyncQdrantClient] = AsyncQdrantClient,
+        _sparse_text_embedding_class: type[SparseTextEmbedding] = SparseTextEmbedding,
     ) -> None:
         """Initialize a QdrantSearch instance.
 
@@ -110,10 +110,7 @@ class QdrantSearch:
 
         """
         response = await self.qdrant.query_points(
-            self.collection,
-            query=query,
-            limit=limit,
-            using=self.dense_index,
+            self.collection, query=query, limit=limit, using=self.dense_index
         )
 
         return self._build_result(response)

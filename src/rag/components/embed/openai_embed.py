@@ -6,6 +6,8 @@ It exposes the following methods:
     - `generate_embedding`: Generates an embedding for a given text.
 """
 
+from typing import Any
+
 from openai import AsyncOpenAI
 
 
@@ -17,7 +19,7 @@ class OpenAIEmbed:
         model: str,
         api_key: str,
         base_url: str | None = None,
-        _openai_client_class=AsyncOpenAI,
+        _openai_client_class: type[AsyncOpenAI] = AsyncOpenAI,
     ) -> None:
         """Initialize an OpenAIInference instance.
 
@@ -31,7 +33,7 @@ class OpenAIEmbed:
         self.model = model
         self.openai = _openai_client_class(api_key=api_key, base_url=base_url)
 
-    async def generate_embedding(self, text: str, **kwargs) -> list[float]:
+    async def generate_embedding(self, text: str, **kwargs: Any) -> list[float]:
         """Generate an embedding for a given text.
 
         Args:

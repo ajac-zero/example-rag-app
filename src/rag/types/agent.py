@@ -9,7 +9,7 @@ The Agent class is what the entrypoints must import to interact with the applica
 """
 
 from collections.abc import AsyncGenerator
-from typing import Protocol
+from typing import Any, Protocol
 
 from .messages import Messages
 
@@ -22,7 +22,7 @@ class Agent(Protocol):
     system: str
     tools: list[dict]
 
-    async def execute(self, tool_name: str, *args, **kwargs):
+    async def execute(self, tool_name: str, *args: Any, **kwargs: Any) -> str:
         """Fetch a tool function from the agent's tool map and runs it given the arguments.
 
         Args:
@@ -36,7 +36,7 @@ class Agent(Protocol):
         """
         ...
 
-    def generate(self, messages: Messages, **kwargs) -> AsyncGenerator[str]:
+    def generate(self, messages: Messages, **kwargs: Any) -> AsyncGenerator[str]:
         """Send messages to the LLM to generate a response.
 
         If the LLM responds with a tool call, execute the tool and

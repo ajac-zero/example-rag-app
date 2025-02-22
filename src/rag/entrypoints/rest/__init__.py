@@ -7,6 +7,7 @@ It also defined a helper function to run the REST API using uvicorn.
 
 import json
 import os
+from collections.abc import AsyncGenerator
 
 import uvicorn
 from fastapi import FastAPI
@@ -27,7 +28,7 @@ class Data(BaseModel):
 
 
 @app.post("/chat")
-async def send_messages(data: Data, stream: bool = False):
+async def send_messages(data: Data, stream: bool = False):  # noqa: ANN201
     """Receives a POST request with a JSON payload following the `Data` model.
 
     This function will reject the request if the payload does not conform to the `Data` model.
@@ -47,7 +48,7 @@ async def send_messages(data: Data, stream: bool = False):
 
     if stream:
 
-        async def stream_response():
+        async def stream_response() -> AsyncGenerator[str]:
             async for chunk in response:
                 yield f"data: {json.dumps(chunk)}\n\n"
 
@@ -61,9 +62,9 @@ async def send_messages(data: Data, stream: bool = False):
         return JSONResponse({"response": buffer})
 
 
-def api():  # pragma: no cover
+def api() -> None:  # pragma: no cover
     """Run the FastAPI app using uvicorn."""
-    host = os.environ.get("HOST", "0.0.0.0")
+    host = os.environ.get("HOST", "127.0.0.1")
     port = os.environ.get("PORT", "8000")
 
     uvicorn.run(app, host=host, port=int(port))

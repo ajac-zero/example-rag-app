@@ -15,7 +15,7 @@ from rag.types import Agent, Messages
 class ChatUI:  # pragma: no cover
     """The terminal user interface for the CLI app."""
 
-    def __init__(self, agent: Agent):
+    def __init__(self, agent: Agent) -> None:
         """Initialize the ChatUI instance.
 
         Args:
@@ -28,9 +28,7 @@ class ChatUI:  # pragma: no cover
     def print_welcome_message(self) -> None:
         """Print the welcome message to the console."""
         self.console.print(
-            "\n[bold cyan]RAG CLI[/]"
-            "\nType your messages and press Enter to chat."
-            "\nEnter /bye to exit."
+            "\n[bold cyan]RAG CLI[/]\nType your messages and press Enter to chat.\nEnter /bye to exit."
         )
 
     def get_user_input(self, messages: Messages) -> None:

@@ -35,9 +35,14 @@ extend-exclude = ["tests", "infra"]
 
 [tool.ruff.lint]
 select = [
+  "A",
+  "ANN",
+  "ASYNC",
   "B",
+  "C4",
   "D",
   "E",
+  "ERA",
   "F",
   "FAST",
   "I",
@@ -47,6 +52,7 @@ select = [
   "PTH",
   "UP",
   "RUF",
+  "S",
   "SIM",
   "TID",
   "W",
@@ -55,6 +61,12 @@ ignore = ["E501"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.ruff.lint.flake8-builtins]
+builtins-allowed-modules = ["types"]
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
 
 [tool.pyright]
 venvPath = "."

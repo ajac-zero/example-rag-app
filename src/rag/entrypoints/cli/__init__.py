@@ -20,7 +20,7 @@ app = Typer()
 @app.command()
 def chat(  # pragma: no cover
     model: Annotated[str, Option("-m", "--model", help="The LLM to use")] = "mock",
-):
+) -> None:
     """Start an interactive chat session with a RAG LLM."""
     agent = Agent(model=model)
 
@@ -28,7 +28,7 @@ def chat(  # pragma: no cover
 
     tui = ChatUI(agent=agent)
 
-    async def chat_session():
+    async def chat_session() -> None:
         try:
             tui.print_welcome_message()
             while True:

@@ -11,6 +11,7 @@ The Agent class is what the entrypoints must import to interact with the applica
 import json
 from collections.abc import AsyncGenerator
 from pathlib import Path
+from typing import Any
 
 from rag import config
 from rag.types import (
@@ -65,8 +66,11 @@ class Agent:
         }
 
     async def _hybrid_search_pipeline(
-        self, query: str, keywords: list[str], limit: int = 25
-    ):
+        self,
+        query: str,
+        keywords: list[str],
+        limit: int = 25,
+    ) -> str:
         """Pipeline to perform a hybrid search and build a string template."""
         query_embedding = await self.embed.generate_embedding(text=query)
 
@@ -78,7 +82,7 @@ class Agent:
 
         return template
 
-    async def _semantic_search_pipeline(self, query: str, limit: int = 25):
+    async def _semantic_search_pipeline(self, query: str, limit: int = 25) -> str:
         """Pipeline to perform a semantic search and build a string template."""
         query_embedding = await self.embed.generate_embedding(text=query)
 
@@ -90,7 +94,11 @@ class Agent:
 
         return template
 
-    async def _keyword_search_pipeline(self, keywords: list[str], limit: int = 25):
+    async def _keyword_search_pipeline(
+        self,
+        keywords: list[str],
+        limit: int = 25,
+    ) -> str:
         """Pipeline to perform a keyword search and build a string template."""
         search_results = await self.search.keyword_search(
             keywords=keywords, limit=limit
@@ -111,7 +119,7 @@ class Agent:
             ]
         )
 
-    async def execute(self, tool_name: str, *args, **kwargs):
+    async def execute(self, tool_name: str, *args: Any, **kwargs: Any) -> str:
         """Fetch a tool function from the agent's tool map and runs it given the arguments.
 
         Args:
@@ -125,7 +133,7 @@ class Agent:
         """
         return await self.tool_map[tool_name](*args, **kwargs)  # type: ignore[operator]
 
-    async def generate(self, messages: Messages, **kwargs) -> AsyncGenerator[str]:
+    async def generate(self, messages: Messages, **kwargs: Any) -> AsyncGenerator[str]:
         """Send messages to the LLM to generate a response.
 
         If the LLM responds with a tool call, execute the tool and
@@ -164,11 +172,7 @@ class Agent:
                     )
 
                     new_messages.append(
-                        {
-                            "role": "tool",
-                            "tool_call_id": tool["id"],
-                            "content": result,
-                        }
+                        {"role": "tool", "tool_call_id": tool["id"], "content": result}
                     )
 
         messages.extend(new_messages)

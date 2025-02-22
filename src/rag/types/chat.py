@@ -7,7 +7,7 @@ Components:
 """
 
 from collections.abc import AsyncGenerator
-from typing import Protocol, TypedDict
+from typing import Any, Protocol, TypedDict
 
 from .messages import Messages, Tool
 
@@ -25,7 +25,7 @@ type Stream = AsyncGenerator[StreamPart]
 class Chat(Protocol):
     """Protocol for an chat component."""
 
-    def generate_stream(self, messages: Messages, model: str, **kwargs) -> Stream:
+    def generate_stream(self, messages: Messages, model: str, **kwargs: Any) -> Stream:
         """Generate a stream of messages from the given messages.
 
         Args:

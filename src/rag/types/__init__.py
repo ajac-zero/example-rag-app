@@ -8,11 +8,7 @@ This allows us to avoid circular imports at runtime.
 """
 
 from .agent import Agent
-from .chat import (
-    Chat,
-    OptionalChat,
-    Stream,
-)
+from .chat import Chat, OptionalChat, Stream
 from .embed import Embed, OptionalEmbed
 from .messages import (
     AssistantMessage,

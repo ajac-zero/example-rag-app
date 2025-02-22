@@ -6,6 +6,8 @@ It exposes the following methods:
     - `generate_stream`: Generates a stream of chat completions.
 """
 
+from typing import Any
+
 from openai import AsyncOpenAI
 
 from rag.types import Messages, Stream, Tool
@@ -18,7 +20,7 @@ class OpenAIChat:
         self,
         api_key: str,
         base_url: str | None = None,
-        _openai_client_class=AsyncOpenAI,
+        _openai_client_class: type[AsyncOpenAI] = AsyncOpenAI,
     ) -> None:
         """Initialize an OpenAIChat instance.
 
@@ -30,7 +32,12 @@ class OpenAIChat:
         """
         self.openai = _openai_client_class(api_key=api_key, base_url=base_url)
 
-    async def generate_stream(self, messages: Messages, model: str, **kwargs) -> Stream:
+    async def generate_stream(
+        self,
+        messages: Messages,
+        model: str,
+        **kwargs: Any,
+    ) -> Stream:
         """Generate a stream of chat completions.
 
         Args:
@@ -51,7 +58,7 @@ class OpenAIChat:
 
         tool_buffer_index: dict[int, Tool] = {}
 
-        async for chunk in response:
+        async for chunk in response:  # type: ignore[union-attr]
             delta = chunk.choices[0].delta
             if content := delta.content:
                 yield {"content": content, "tools": None}
@@ -65,8 +72,8 @@ class OpenAIChat:
                             "type": "function",
                             "function": {"name": "", "arguments": ""},
                         }
-                    if id := call.id:
-                        tool_buffer_index[idx]["id"] = id
+                    if call_id := call.id:
+                        tool_buffer_index[idx]["id"] = call_id
                     if function := call.function:
                         if name := function.name:
                             tool_buffer_index[idx]["function"]["name"] = name

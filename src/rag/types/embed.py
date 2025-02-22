@@ -5,7 +5,7 @@ This is to ensure external functions can follow this API and be confident
 their component will work as expected, regardless of the underlying implementation.
 """
 
-from typing import Protocol
+from typing import Any, Protocol
 
 __all__ = ["Embed", "OptionalEmbed"]
 
@@ -13,7 +13,7 @@ __all__ = ["Embed", "OptionalEmbed"]
 class Embed(Protocol):
     """Protocol for an embed component."""
 
-    async def generate_embedding(self, text: str, **kwargs) -> list[float]:
+    async def generate_embedding(self, text: str, **kwargs: Any) -> list[float]:
         """Generate an embedding from the given text.
 
         Args:
