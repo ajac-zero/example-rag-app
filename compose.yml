@@ -37,7 +37,7 @@ services:
       # Logging
       LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY}
       LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY}
-      LANGGUSE_HOST: ${LANGFUSE_HOST}
+      LANGFUSE_HOST: ${LANGFUSE_HOST}
 
       # Caching
       REDIS_URL: ${REDIS_URL:-redis://:myredissecret@redis:6379}
