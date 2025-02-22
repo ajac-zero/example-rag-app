@@ -4,6 +4,7 @@ run entrypoint *ARGS:
   @docker compose run --rm rag {{entrypoint}} {{ARGS}}
 
 test tests="":
+  @echo "Testing..."
   @uv run pytest tests/{{tests}} --cov=src/ --cov-report term-missing
 
 tidy:
@@ -22,11 +23,11 @@ graph:
   @uv run pydeps src/rag/ -o dependency-graph.svg
 
 ci:
-  just tidy
+  @just tidy
   @echo
-  just type-check
+  @just type-check
   @echo
-  just test
+  @just test
 
 scaffold:
   @echo "Scaffolding infrastructure..."
