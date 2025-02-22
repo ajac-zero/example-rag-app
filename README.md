@@ -15,6 +15,7 @@ It includes the following:
 - 🔍 **Qdrant** – A vector database for semantic, keyword, and hybrid search.
 - 🐍 **Pydantic-Settings** – Configures the application using environment variables.
 - 📦 **UV** – A project and dependency manager.
+- ⚡ **Redis** – An in-memory database for semantic caching.
 - 🧹 **Ruff** – A linter and formatter.
 - ✅ **Mypy** – A static type checker.
 - 📈 **Pydeps** – A dependency graph generator.
@@ -33,8 +34,8 @@ directly with the OpenAI API, which gives us more flexibility and control.
 
 There are only two requirements to run this project:
 
-- UV (install guide [here](https://www.uv.sh/install/))
-- Docker (install guide [here](https://docs.docker.com/get-docker/))
+- UV ([install](https://docs.astral.sh/uv/getting-started/installation/))
+- Docker ([install](https://docs.docker.com/get-docker/))
 
 ## Usage
 
@@ -189,7 +190,8 @@ Tests are divided into three categories:
 - Integration tests: Tests that focus on testing the code with real services.
 - End-to-end tests: Tests that focus on testing the entire application stack.
 
-You can run the test suite as configured in the pyproject.toml by using the following command:
+You can run the test suite as configured in the pyproject.toml
+by using the following command:
 
 ```bash
 just test unit # This will run all unit tests
