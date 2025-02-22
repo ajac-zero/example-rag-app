@@ -35,3 +35,6 @@ scaffold:
 teardown:
   @echo "Tearing down infrastructure..."
   @docker compose --profile infra down
+
+create-collection:
+  @uvx marimo edit --sandbox infra/qdrant/create_collection.py
