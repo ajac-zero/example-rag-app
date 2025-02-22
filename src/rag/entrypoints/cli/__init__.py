@@ -10,6 +10,7 @@ from typing import Annotated
 from typer import Exit, Option, Typer
 
 from rag.agent import Agent
+from rag.types import Messages
 
 from .tui import ChatUI
 
@@ -23,7 +24,7 @@ def chat(  # pragma: no cover
     """Start an interactive chat session with a RAG LLM."""
     agent = Agent(model=model)
 
-    messages = [{"role": "system", "content": agent.system}]
+    messages: Messages = [{"role": "system", "content": agent.system}]
 
     tui = ChatUI(agent=agent)
 
@@ -31,7 +32,8 @@ def chat(  # pragma: no cover
         try:
             tui.print_welcome_message()
             while True:
-                tui.get_user_input(messages)
+                if messages[-1]["role"] != "tool":
+                    tui.get_user_input(messages)
                 await tui.display_assistant_output(messages)
         except SystemExit as err:
             raise Exit() from err

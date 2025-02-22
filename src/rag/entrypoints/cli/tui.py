@@ -9,7 +9,7 @@ from rich.console import Console
 from rich.live import Live
 from rich.markdown import Markdown
 
-from rag.types import Agent
+from rag.types import Agent, Messages
 
 
 class ChatUI:  # pragma: no cover
@@ -33,7 +33,7 @@ class ChatUI:  # pragma: no cover
             "\nEnter /bye to exit."
         )
 
-    def get_user_input(self, messages: list) -> None:
+    def get_user_input(self, messages: Messages) -> None:
         """Get user input from the console and append it to the messages list."""
         user_input = self.console.input("\n[bold blue]You:[/]\n")
 
@@ -44,7 +44,7 @@ class ChatUI:  # pragma: no cover
 
         messages.append({"role": "user", "content": user_input})
 
-    async def display_assistant_output(self, messages: list) -> None:
+    async def display_assistant_output(self, messages: Messages) -> None:
         """Display the assistant's output in the console."""
         self.console.print("\n[bold green]Assistant:[/]")
 
@@ -54,3 +54,15 @@ class ChatUI:  # pragma: no cover
             async for content in self.agent.generate(messages):
                 buffer += content
                 live.update(Markdown(buffer))
+
+            if len(buffer) == 0:
+                assistant_messages = [m for m in messages if m["role"] == "assistant"]
+                last_assistant_message = assistant_messages[-1]
+
+                if tool_calls := last_assistant_message.get("tool_calls"):
+                    for tool_call in tool_calls:
+                        name = tool_call["function"]["name"]
+                        arguments = tool_call["function"]["arguments"]
+                        live.update(
+                            f"[bold yellow]Tool call:[/] {name}\n[bold yellow]Arguments:[/] {arguments}"
+                        )

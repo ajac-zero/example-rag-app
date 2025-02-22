@@ -142,16 +142,15 @@ class Agent:
             An asynchronous generator that yields the LLM's response content one token (str) at a time.
 
         """
-        assistant_message: AssistantMessage = {"role": "assistant"}
-        messages.append(assistant_message)
+        assistant_message: AssistantMessage = {"role": "assistant", "content": ""}
+
+        new_messages: Messages = []
+        new_messages.append(assistant_message)
 
         async for chunk in self.chat.generate_stream(
-            messages[:-1], model=self.model, tools=self.tools, **kwargs
+            messages, model=self.model, tools=self.tools, **kwargs
         ):
             if content := chunk["content"]:
-                if "content" not in assistant_message:
-                    assistant_message["content"] = ""
-
                 assistant_message["content"] += content
                 yield content
 
@@ -164,7 +163,7 @@ class Agent:
                         **json.loads(tool["function"]["arguments"]),
                     )
 
-                    messages.append(
+                    new_messages.append(
                         {
                             "role": "tool",
                             "tool_call_id": tool["id"],
@@ -172,5 +171,4 @@ class Agent:
                         }
                     )
 
-                async for content in self.generate(messages):
-                    yield content
+        messages.extend(new_messages)
