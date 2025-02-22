@@ -6,7 +6,6 @@
 #     "marimo",
 #     "openai==1.63.2",
 #     "qdrant-client==1.13.2",
-#     "sentence-transformers==3.4.1",
 # ]
 # ///
 
@@ -36,21 +35,12 @@ def _(mo, run_button):
     from datasets import load_dataset
     from openai import OpenAI
     from qdrant_client import QdrantClient, models
-    from sentence_transformers import SentenceTransformer
+    # from sentence_transformers import SentenceTransformer
 
     openai = OpenAI(base_url="http://localhost:4000", api_key="none_but_required")
     qdrant = QdrantClient(url="http://localhost:6333")
-    minilm = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-    return (
-        OpenAI,
-        QdrantClient,
-        SentenceTransformer,
-        load_dataset,
-        minilm,
-        models,
-        openai,
-        qdrant,
-    )
+    # minilm = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+    return OpenAI, QdrantClient, load_dataset, models, openai, qdrant
 
 
 @app.cell
@@ -129,20 +119,20 @@ def _(openai):
 
 
 @app.cell
-def _(minilm):
-    def minilm_embed(chunk):
-        return minilm.encode(chunk).tolist()
-    return (minilm_embed,)
+def _():
+    # def minilm_embed(chunk):
+    #     return minilm.encode(chunk).tolist()
+    return
 
 
 @app.cell
-def _(minilm_embed):
+def _(openai_embed):
     def create_embeddings(row):
         chunk: str = row["chunks"]
 
         # This controls the embedding model used in the collection
-        # embedding = openai_embed(chunk)
-        embedding = minilm_embed(chunk)
+        embedding = openai_embed(chunk)
+        # embedding = minilm_embed(chunk)
 
         return embedding
     return (create_embeddings,)
@@ -188,7 +178,7 @@ def _(create_sparse_embeddings, df_exploded):
 def _(models, qdrant):
     qdrant.recreate_collection(
         collection_name="Wikipedia",
-        vectors_config={"dense": models.VectorParams(size=384, distance=models.Distance.COSINE)}, # You must change the size param to match the dimensions of your embedding model
+        vectors_config={"dense": models.VectorParams(size=3072, distance=models.Distance.COSINE)}, # You must change the size param to match the dimensions of your embedding model
         sparse_vectors_config={"sparse": models.SparseVectorParams()},
     )
     return
