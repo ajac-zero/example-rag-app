@@ -36,7 +36,9 @@ extend-exclude = ["tests", "infra"]
 [tool.ruff.lint]
 select = [
   "A",
-  "ANN",
+  "ANN0",
+  "ANN2",
+  "ANN4",
   "ASYNC",
   "B",
   "C4",
