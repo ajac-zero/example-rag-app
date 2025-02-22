@@ -42,7 +42,8 @@ def get_qdrant() -> search.QdrantSearch:
 def get_openai_chat() -> chat.OpenAIChat:
     """Create an OpenAIInference instance from type-checked environment variables. Instance is cached on first call."""
     return chat.OpenAIChat(
-        base_url=str(settings.openai_url), api_key=settings.openai_api_key
+        base_url=str(settings.openai_url),
+        api_key=settings.openai_api_key,
     )
 
 

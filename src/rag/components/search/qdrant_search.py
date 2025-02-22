@@ -110,7 +110,10 @@ class QdrantSearch:
 
         """
         response = await self.qdrant.query_points(
-            self.collection, query=query, limit=limit, using=self.dense_index
+            self.collection,
+            query=query,
+            limit=limit,
+            using=self.dense_index,
         )
 
         return self._build_result(response)
