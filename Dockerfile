@@ -30,6 +30,6 @@ FROM python:3.13-slim-bookworm
 
 COPY --from=builder --chown=app:app /app /app
 
-ENV PATH="/app/.venv/bin:$PATH"
+ENV PATH="/app/.venv/bin:$PATH" HOST="0.0.0.0"
 
 CMD ["api"]
