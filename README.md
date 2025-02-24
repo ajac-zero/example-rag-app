@@ -1,33 +1,40 @@
-# Example RAG Application
+# ⚡🤖 Example RAG Application
+
+<div align="center">
+  <img src="./demo.gif" alt="Description of your GIF">
+  <p><em>RAG with Groq Llama-3.3-70b using the CLI entrypoint</em></p>
+</div>
 
 This repository contains a Python program that
 exposes a RAG pipeline through a REST API or interactive CLI.
 It is designed to serve as a reference implementation
 for AI applications that follow best practices.
 
-Importantly, this repository does not use any LLM framework! It works
+Importantly, **this repository does not use any LLM framework!** It works
 directly with the OpenAI API, which gives us more flexibility and control.
+I believe this is the best way to learn how to work with LLMs for app building;
+Of course, you can add a framework if you prefer.
 
 It includes the following:
 
-- 🏗 **FastAPI** – A type-safe, asynchronous web framework for building REST APIs.
+- 🏎️ **FastAPI** – A type-safe, asynchronous web framework for building REST APIs.
 - 💻 **Typer** – A framework for building command-line interfaces.
-- 🤖 **LiteLLM** – A proxy to call 100+ LLM providers from the OpenAI library.
-- 📊 **Langfuse** – An LLM observability platform to monitor your agents.
+- 🍓 **LiteLLM** – A proxy to call 100+ LLM providers from the OpenAI library.
+- 🔌 **Langfuse** – An LLM observability platform to monitor your agents.
 - 🔍 **Qdrant** – A vector database for semantic, keyword, and hybrid search.
-- 🐍 **Pydantic-Settings** – Configures the application using environment variables.
-- 📦 **UV** – A project and dependency manager.
-- ⚡ **Redis** – An in-memory database for semantic caching.
+- ⚙️ **Pydantic-Settings** – Configures the application using environment variables.
+- 🚚 **UV** – A project and dependency manager.
+- 🏍️ **Redis** – An in-memory database for semantic caching.
 - 🧹 **Ruff** – A linter and formatter.
 - ✅ **Mypy** – A static type checker.
-- 📈 **Pydeps** – A dependency graph generator.
+- 📍 **Pydeps** – A dependency graph generator.
 - 🧪 **Pytest** – A testing framework.
 - 🏗 **Testcontainers** – A tool to set up integration tests.
 - 📏 **Coverage** – A code coverage tool.
-- 📓 **Marimo** – A next-gen notebook/scripting tool.
-- ⚡ **Just** – A task runner.
+- 🗒️ **Marimo** – A next-gen notebook/scripting tool.
+- 👟 **Just** – A task runner.
 - 🐳 **Docker** – A tool to containerize the Python application.
-- 📦 **Compose** – A container orchestration tool for managing the application infrastructure.
+- 🐙 **Compose** – A container orchestration tool for managing the application infrastructure.
 
 ## Requirements
 
@@ -152,6 +159,8 @@ uv run api
 By default, this will start a REST API server on port `8000`.
 You can go to `http://localhost:8000/docs` to see the API documentation.
 
+## Development
+
 ### Additional functionality
 
 #### 6. Running the linter and formatter
@@ -204,8 +213,13 @@ just test # This will run all tests
 
 #### 9. Generating a dependency graph
 
-Dependency graphs can be useful to make your your application
+Dependency graphs can be useful to make sure your application
 does not become too coupled between different modules.
+
+<div align="center">
+  <img src="./dependency-graph.svg" alt="Dependency graph for the project" width="500">
+  <p><em>The contact area of each package is reduced as much as possible.</em></p>
+</div>
 
 To generate a dependency graph, you can use the following command:
 
