@@ -49,8 +49,8 @@ class Agent:
 
         Args:
             model (str): The model to use for inference, as defined in the litellm config.
-            _chat (OptionalChat, optional): The chat component to use to generate chat completions. Defaults to OpenAIChat no provided.
-            _search (OptionalSearch, optional): The search component to use to generate search results. Defaults to QdrantSearch no provided.
+            _chat (OptionalChat, optional): The chat component to use to generate chat completions. Defaults to OpenAIChat if not provided.
+            _search (OptionalSearch, optional): The search component to use to generate search results. Defaults to QdrantSearch if not provided.
             _embed (OptionalEmbed, optional): The embed component to use to generate embeddings. Defaults to OpenAIEmbed if not provided.
 
         """
