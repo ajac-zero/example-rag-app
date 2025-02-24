@@ -10,7 +10,6 @@ services:
     depends_on:
       - litellm
       - qdrant
-    profiles: ["full"]
 
   qdrant:
     image: qdrant/qdrant:latest
@@ -19,7 +18,6 @@ services:
       - 6334:6334
     volumes:
       - ./infra/qdrant/volume/:/qdrant/storage:z
-    profiles: ["full", "infra"]
 
   litellm:
     image: ghcr.io/berriai/litellm:main-latest
@@ -44,13 +42,11 @@ services:
     command: ["--config", "/app/litellm_config.yml"]
     depends_on:
       - mockai
-    profiles: ["full", "infra"]
 
   mockai:
     image: ajaczero/mock-ai:latest
     ports:
       - 8100:8100
-    profiles: ["full", "infra"]
 
 include:
   - infra/langfuse/compose.yml

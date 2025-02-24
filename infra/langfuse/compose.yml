@@ -47,7 +47,6 @@ services:
       REDIS_TLS_CA: ${REDIS_TLS_CA:-/certs/ca.crt}
       REDIS_TLS_CERT: ${REDIS_TLS_CERT:-/certs/redis.crt}
       REDIS_TLS_KEY: ${REDIS_TLS_KEY:-/certs/redis.key}
-    profiles: ["full", "infra"]
 
   langfuse-web:
     image: langfuse/langfuse:3
@@ -68,7 +67,6 @@ services:
       LANGFUSE_INIT_USER_EMAIL: ${LANGFUSE_INIT_USER_EMAIL:-}
       LANGFUSE_INIT_USER_NAME: ${LANGFUSE_INIT_USER_NAME:-}
       LANGFUSE_INIT_USER_PASSWORD: ${LANGFUSE_INIT_USER_PASSWORD:-}
-    profiles: ["full", "infra"]
 
   clickhouse:
     image: clickhouse/clickhouse-server
@@ -90,7 +88,6 @@ services:
       timeout: 5s
       retries: 10
       start_period: 1s
-    profiles: ["full", "infra"]
 
   minio:
     image: minio/minio
@@ -112,7 +109,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 1s
-    profiles: ["full", "infra"]
 
   redis:
     image: redis:7
@@ -126,7 +122,6 @@ services:
       interval: 3s
       timeout: 10s
       retries: 10
-    profiles: ["full", "infra"]
 
   postgres:
     image: postgres:${POSTGRES_VERSION:-latest}
@@ -144,7 +139,6 @@ services:
       - 5432:5432
     volumes:
       - langfuse_postgres_data:/var/lib/postgresql/data
-    profiles: ["full", "infra"]
 
 volumes:
   langfuse_postgres_data:
