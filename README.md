@@ -1,10 +1,12 @@
-# Production RAG Example
+# Example RAG Application
 
-This repository contains a Python application that
+This repository contains a Python program that
 exposes a RAG pipeline through a REST API or interactive CLI.
-
 It is designed to serve as a reference implementation
 for AI applications that follow best practices.
+
+Importantly, this repository does not use any LLM framework! It works
+directly with the OpenAI API, which gives us more flexibility and control.
 
 It includes the following:
 
@@ -26,9 +28,6 @@ It includes the following:
 - ⚡ **Just** – A task runner.
 - 🐳 **Docker** – A tool to containerize the Python application.
 - 📦 **Compose** – A container orchestration tool for managing the application infrastructure.
-
-Importantly, this repository does not use any LLM framework! It works
-directly with the OpenAI API, which gives us more flexibility and control.
 
 ## Requirements
 
@@ -58,7 +57,7 @@ uv sync --dev
 
 ### Running the Application
 
-#### Setting up the infrastructure
+#### 1. Setting up the infrastructure
 
 Before running the application, you need to set up the environment variables.
 
@@ -74,7 +73,7 @@ just scaffold
 
 This will use `docker compose` to run microservice containers in the background.
 
-#### Setting up LLM Observability
+#### 2. Setting up LLM Observability
 
 Once the infrastructure is up and running, you can go to port `3000` on your machine
 where the Langfuse web interface is running.
@@ -95,7 +94,7 @@ just teardown # This will stop all infrastructure containers
 just scaffold # This will start all infrastructure containers again
 ```
 
-#### Creating a search index
+#### 3. Creating a search index
 
 For this example repository, I've included a basic RAG ingestion pipeline that reads
 the Wikipedia dataset from HuggingFace, then chunks and filters the data, and finally
@@ -115,7 +114,7 @@ Marimo is a next-gen notebook tool that allows you to create python notebooks th
 double as scripts. Additionally, they use `uv` to define dependencies inline which
 eliminates the need to manage python versions or virtual environments.
 
-#### Running the CLI
+#### 4. Running the CLI
 
 To run the application as an interactive CLI, use the following command:
 
@@ -142,7 +141,7 @@ in the  `infra/litellm/config.yml` file.
 Just make sure you have supplied the proper environment
 variables in your `.env` file for the model you want to use.
 
-#### Running the API
+#### 5. Running the API
 
 To run the application as a REST API, use the following command:
 
@@ -155,7 +154,7 @@ You can go to `http://localhost:8000/docs` to see the API documentation.
 
 ### Additional functionality
 
-#### Running the linter and formatter
+#### 6. Running the linter and formatter
 
 This repository uses [Ruff](https://github.com/charliermarsh/ruff)
 for linting and formatting.
@@ -165,7 +164,7 @@ You can run ruff as configured in the pyproject.toml by using the following comm
 just tidy
 ```
 
-#### Running the type checker
+#### 7. Running the type checker
 
 This repository uses [Mypy](https://github.com/python/mypy) for type checking.
 You can run mypy as configured in the pyproject.toml by using the following command:
@@ -174,7 +173,7 @@ You can run mypy as configured in the pyproject.toml by using the following comm
 just type-check
 ```
 
-#### Running the test suite
+#### 8. Running the test suite
 
 This repository uses [Pytest](https://github.com/pytest-dev/pytest) for testing.
 It also includes:
@@ -203,7 +202,7 @@ just test e2e # This will run all end-to-end tests
 just test # This will run all tests
 ```
 
-#### Generating a dependency graph
+#### 9. Generating a dependency graph
 
 Dependency graphs can be useful to make your your application
 does not become too coupled between different modules.
@@ -217,7 +216,7 @@ just graph
 This will generate a dependency graph in the `dependency-graph.svg` file.
 It should also automatically open the file in your default image viewer.
 
-#### Running local CI
+#### 10. Running local CI
 
 A sample CI pipeline is included in this repository.
 It runs the linter and formatter, followed by the type checker,
@@ -231,7 +230,7 @@ To run the CI pipeline, you can use the following command:
 just ci
 ```
 
-#### Easier way to run the application
+#### 11. Easier way to run the application
 
 You can setup the application infrastructure and run the application
 in a single command using the following command:
