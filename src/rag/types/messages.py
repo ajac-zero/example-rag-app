@@ -1,14 +1,12 @@
-"""`types.messages` defines the types for messages.
-
-This module defines the types for messages, which are used to communicate between components.
+"""`types.messages` defines the types for different messages and message attributes.
 
 Types:
-    AssistantMessage: A type for assistant messages.
-    Messages: A type for messages.
-    SystemMessage: A type for system messages.
-    Tool: A type for tool tools.
-    ToolMessage: A type for tool messages.
-    UserMessage: A type for user messages.
+    Messages: A list of arbitrary messages.
+    AssistantMessage: A message with role "assistant" and optional tool_calls.
+    SystemMessage: A messages with role "system".
+    ToolMessage: A message with role "tool".
+    Tool: A dict with id, type, and function fields.
+    UserMessage: A message with role "user".
 """
 
 from typing import Literal, NotRequired, TypedDict
@@ -24,7 +22,7 @@ __all__ = [
 
 
 class AssistantMessage(TypedDict):
-    """AssistantMessage is a type for assistant messages."""
+    """A message with role "assistant" and optional tool_calls."""
 
     role: Literal["assistant"]
     content: NotRequired[str]
@@ -32,7 +30,7 @@ class AssistantMessage(TypedDict):
 
 
 class ToolMessage(TypedDict):
-    """ToolMessage is a type for tool messages."""
+    """A message with role "tool" and tool_call_id and content."""
 
     role: Literal["tool"]
     tool_call_id: str
@@ -40,14 +38,14 @@ class ToolMessage(TypedDict):
 
 
 class UserMessage(TypedDict):
-    """UserMessage is a type for user messages."""
+    """A message with role "user" and content."""
 
     role: Literal["user"]
     content: str
 
 
 class SystemMessage(TypedDict):
-    """SystemMessage is a type for system messages."""
+    """A message with role "system" and content."""
 
     role: Literal["system"]
     content: str
@@ -62,7 +60,7 @@ class Function(TypedDict):
 
 
 class Tool(TypedDict):
-    """Tool is a type for tool tools."""
+    """A dict with id, type, and function fields."""
 
     id: str
     type: Literal["function"]

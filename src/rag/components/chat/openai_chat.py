@@ -1,4 +1,4 @@
-"""`inference._openai.py` defines the OpenAI Inference component.
+"""`chat.openai_chat` defines the OpenAIChat component.
 
 This component uses the OpenAI API to generate chat completions.
 It uses the AsyncOpenAI client to interact with the OpenAI API.

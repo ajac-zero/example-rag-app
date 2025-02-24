@@ -1,9 +1,4 @@
-"""`types.vectorizer` defines the protocol for the vectorizer component group.
-
-All components in the vectorizer component group must implement this protocol.
-This is to ensure external functions can follow this API and be confident
-their component will work as expected, regardless of the underlying implementation.
-"""
+"""`types.embed` defines the embed protocol."""
 
 from typing import Any, Protocol
 

@@ -1,4 +1,4 @@
-"""`entrypoints.py` exposes the REST API and CLI entrypoints for the application."""
+"""`rag.entrypoints` exposes the REST and CLI entrypoints for the application."""
 
 from .cli import app as cli
 from .rest import api

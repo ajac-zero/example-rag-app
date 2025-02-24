@@ -1,4 +1,4 @@
-"""`rest.py` exposes the `Agent` from a REST API.
+"""`entrypoints.rest` exposes the `Agent` from a REST API.
 
 This module defines a FastAPI app and endpoints that contain
 the logic to interact with the `Agent` via HTTP requests.

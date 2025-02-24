@@ -1,4 +1,4 @@
-"""`config.py` configures the application from env variables.
+"""`rag.config` configures the application from env variables.
 
 This module configures components based on the attributes of `Settings` and caches them for reuse.
 Environment variables are type-checked with pydantic settings to avoid misconfigurations at runtime.
@@ -40,7 +40,7 @@ def get_qdrant() -> search.QdrantSearch:
 
 @lru_cache(1)
 def get_openai_chat() -> chat.OpenAIChat:
-    """Create an OpenAIInference instance from type-checked environment variables. Instance is cached on first call."""
+    """Create an OpenAIChat instance from type-checked environment variables. Instance is cached on first call."""
     return chat.OpenAIChat(
         base_url=str(settings.openai_url),
         api_key=settings.openai_api_key,

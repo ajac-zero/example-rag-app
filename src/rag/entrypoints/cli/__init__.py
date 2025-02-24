@@ -1,4 +1,4 @@
-"""`cli.py` exposes the `Agent` from a command line interface.
+"""`entrypoints.cli` exposes the `Agent` from a command line interface.
 
 This module defines a Typer app and commands that contain
 the logic to interact with the `Agent` via the console.

@@ -1,4 +1,4 @@
-"""`models.py` defines the Pydantic models used in the REST API.
+"""`rest.models` defines the Pydantic models used in the REST API.
 
 This module defines models that are used to validate and parse
 the JSON payloads sent to the REST API. These models MUST be
@@ -40,7 +40,12 @@ class UserMessage(BaseModel):
     content: str
 
 
+class SystemMessage(BaseModel):
+    role: Literal["system"]
+    content: str
+
+
 class Messages(RootModel):
     """Messages represents a list of UserMessage, AssistantMessage, ToolMessage."""
 
-    root: list[AssistantMessage | ToolMessage | UserMessage]
+    root: list[SystemMessage | AssistantMessage | ToolMessage | UserMessage]

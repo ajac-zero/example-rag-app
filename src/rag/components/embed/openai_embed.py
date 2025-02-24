@@ -1,4 +1,4 @@
-"""`vectorizer._openai.py` defines the OpenAI Vectorizer component.
+"""`embed.openai_embed` defines the OpenAIEmbed component.
 
 This component uses the OpenAI API to generate embeddings.
 It uses the AsyncOpenAI client to interact with the OpenAI API.

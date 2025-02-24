@@ -1,4 +1,4 @@
-"""`agent.py` defines the Agent class, which is the main logic abstraction for the application.
+"""`rag.agent` defines the Agent class, which is the main logic abstraction for the application.
 
 The main objective of the Agent class is to provide instructions to the AI through the system prompt and tool definitions,
 along with access to components from the 'components' module in order to perform actions as needed.
@@ -49,9 +49,9 @@ class Agent:
 
         Args:
             model (str): The model to use for inference, as defined in the litellm config.
-            embedding_model (str, optional): The model to use for embedding generation. Defaults to "text-embedding-3-large".
-            _inference (InferenceProtocol, optional): The inference component to use to generate embeddings and chat completions.
-            _search (SearchProtocol, optional): The search component to use to generate search results.
+            _chat (OptionalChat, optional): The chat component to use to generate chat completions. Defaults to OpenAIChat no provided.
+            _search (OptionalSearch, optional): The search component to use to generate search results. Defaults to QdrantSearch no provided.
+            _embed (OptionalEmbed, optional): The embed component to use to generate embeddings. Defaults to OpenAIEmbed if not provided.
 
         """
         self.model = model

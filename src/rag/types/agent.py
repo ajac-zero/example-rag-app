@@ -1,12 +1,4 @@
-"""`types.agent` defines the Agent class, which is the main logic abstraction for the application.
-
-The main objective of the Agent class is to provide instructions to the AI through the system prompt and tool definitions,
-along with access to components from the 'components' module in order to perform actions as needed.
-
-An Agent instance uses components configured and provided by the 'config' module. It also imports the 'types' module for type-hinting.
-
-The Agent class is what the entrypoints must import to interact with the application logic.
-"""
+"""`types.agent` provides the `Agent` protocol for type annotations."""
 
 from collections.abc import AsyncGenerator
 from typing import Any, Protocol

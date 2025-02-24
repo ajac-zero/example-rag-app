@@ -1,10 +1,4 @@
-"""`chat.py` defines the chat component group.
-
-This component group contains components that can run chat completions.
-
-Components:
-    Chat: Run chat completions on LLM models.
-"""
+"""`types.chat` provides the chat protocol and the required return types."""
 
 from collections.abc import AsyncGenerator
 from typing import Any, Protocol, TypedDict

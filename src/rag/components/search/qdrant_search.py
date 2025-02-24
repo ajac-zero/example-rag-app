@@ -1,4 +1,4 @@
-"""`qdrant_search.py` defines the Qdrant Search component.
+"""`search.qdrant_search` defines the QdrantSearch component.
 
 This component performs searches on a Qdrant vector database.
 It uses the QdrantClient to interact with the Qdrant API.
@@ -16,7 +16,7 @@ from rag.types import SearchResult
 
 
 class QdrantSearch:
-    """Qdrant is a Search component that performs searches on a Qdrant vector database."""
+    """QdrantSearch is a component that performs searches on a Qdrant vector database."""
 
     def __init__(
         self,

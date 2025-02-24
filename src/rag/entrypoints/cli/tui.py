@@ -1,4 +1,4 @@
-"""`tui.py` contains the terminal user interface for the CLI app.
+"""`cli.tui` contains the terminal user interface for the CLI app.
 
 This module use `rich` to define how the CLI application is rendered in the console.
 It does not contain any application logic; It merely determines the style and content

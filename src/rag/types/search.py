@@ -1,9 +1,4 @@
-"""`types.search` defines the protocol for the search component group.
-
-All components in the search component group must implement this protocol.
-This is to ensure external functions can follow this API and be confident
-their component will work as expected, regardless of the underlying implementation.
-"""
+"""`types.search` defines the search protocol and required return types."""
 
 from typing import Any, Protocol, TypedDict
 

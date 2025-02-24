@@ -1,6 +1,7 @@
-"""`components.py` defines the component groups used in the application.
+"""`rag.components` defines the component groups used in the application.
 
 Component groups:
-    inference: The inference component group contains components that can run inference on AI models (LLMS, Embeddings).
+    chat: The chat component group contains components that can generate chat completions.
+    embed: The embed component group contains components that can generate embeddings.
     search: The search component group contains components that can perform searches on an external knowledge base (VectorDB).
 """
