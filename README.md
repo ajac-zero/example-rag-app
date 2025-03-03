@@ -104,7 +104,7 @@ just scaffold # This will start all infrastructure containers again
 #### 3. Creating a search index
 
 For this example repository, I've included a basic RAG ingestion pipeline that reads
-the Wikipedia dataset from HuggingFace, then chunks and filters the data, and finally
+the Wikipedia dataset from Hugging Face, then chunks and filters the data, and finally
 creates embeddings for each chunk, which are then indexed in Qdrant.
 
 This pipeline is fairly simple. It's main purpose is to be easy to replicate
