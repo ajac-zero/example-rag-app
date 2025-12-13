@@ -7,7 +7,7 @@ from testcontainers.core.waiting_utils import wait_for_logs
 from testcontainers.generic import ServerContainer
 from testcontainers.qdrant import QdrantContainer
 
-from rag.agent import Agent
+from rag.agent import Rag
 from rag.components.chat import OpenAIChat
 from rag.components.search import QdrantSearch
 from rag.components.embed import OpenAIEmbed
@@ -92,4 +92,4 @@ async def qdrant_search(qdrant: str):
 # Agent
 @pytest.fixture(scope="function")
 def agent(qdrant_search: QdrantSearch, openai_chat: OpenAIChat, openai_embed: OpenAIEmbed):
-    return Agent(model="mock", _chat=openai_chat, _search=qdrant_search, _embed=openai_embed)
+    return Rag(model="mock", _chat=openai_chat, _search=qdrant_search, _embed=openai_embed)

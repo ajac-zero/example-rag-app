@@ -1,11 +1,9 @@
-"""`rag.agent` defines the Agent class, which is the main logic abstraction for the application.
+"""`rag.agent.agent` defines the Agent class, which is the main logic abstraction for the application.
 
 The main objective of the Agent class is to provide instructions to the AI through the system prompt and tool definitions,
 along with access to components from the 'components' module in order to perform actions as needed.
 
 An Agent instance uses components configured and provided by the 'config' module. It also imports the 'types' module for type-hinting.
-
-The Agent class is what the entrypoints must import to interact with the application logic.
 """
 
 import json
@@ -23,17 +21,13 @@ from rag.types import (
     SearchResult,
 )
 
-__all__ = ["Agent"]
-
-agent_dir = Path(__file__).parent
-
-system_prompt_txt = agent_dir / "system_prompt.txt"
-
-tools_json = agent_dir / "tools.json"
+prompts = Path("prompts")
+system_prompt_txt = prompts / "system_prompt.txt"
+tools_json = prompts / "tools.json"
 
 
-class Agent:
-    """`Agent` encapsulates a system prompt, tool definitions, and tool execution logic."""
+class Rag:
+    """`Rag` encapsulates a system prompt, tool definitions, and tool execution logic."""
 
     system = system_prompt_txt.read_text()
     tools = json.loads(tools_json.read_text())
@@ -150,34 +144,38 @@ class Agent:
             An asynchronous generator that yields the LLM's response content one token (str) at a time.
 
         """
-        assistant_message: AssistantMessage = {"role": "assistant", "content": ""}
+        while True:
+            assistant_message: AssistantMessage = {"role": "assistant", "content": ""}
 
-        new_messages: Messages = []
-        new_messages.append(assistant_message)
+            new_messages: Messages = []
+            new_messages.append(assistant_message)
 
-        async for chunk in self.chat.generate_stream(
-            messages, model=self.model, tools=self.tools, **kwargs
-        ):
-            if content := chunk["content"]:
-                assistant_message["content"] += content
-                yield content
+            async for chunk in self.chat.generate_stream(
+                messages, model=self.model, tools=self.tools, **kwargs
+            ):
+                if content := chunk["content"]:
+                    assistant_message["content"] += content
+                    yield content
 
-            if tools := chunk["tools"]:
-                assistant_message["tool_calls"] = tools
+                if tools := chunk["tools"]:
+                    assistant_message["tool_calls"] = tools
 
-                for tool in tools:
-                    result = await self.execute(
-                        tool_name=tool["function"]["name"],
-                        **json.loads(tool["function"]["arguments"]),
-                    )
+                    for tool in tools:
+                        result = await self.execute(
+                            tool_name=tool["function"]["name"],
+                            **json.loads(tool["function"]["arguments"]),
+                        )
 
-                    new_messages.append(
-                        {"role": "tool", "tool_call_id": tool["id"], "content": result}
-                    )
+                        new_messages.append(
+                            {
+                                "role": "tool",
+                                "tool_call_id": tool["id"],
+                                "content": result,
+                            }
+                        )
 
-        messages.extend(new_messages)
+            messages.extend(new_messages)
 
-        # Recursively generate if the last message is a tool result
-        if messages and messages[-1]["role"] == "tool":
-            async for chunk in self.generate(messages, **kwargs):
-                yield chunk
+            # Continue loop if the last message is a tool result, otherwise break
+            if not messages or messages[-1]["role"] != "tool":
+                break

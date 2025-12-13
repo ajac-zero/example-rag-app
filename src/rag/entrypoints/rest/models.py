@@ -9,7 +9,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, RootModel
 
-__all__ = ["BaseModel", "Messages"]
+__all__ = ["BaseModel", "Messages", "Data"]
 
 
 class Function(BaseModel):
@@ -52,3 +52,10 @@ class Messages(RootModel):
     """
 
     root: list[SystemMessage | AssistantMessage | ToolMessage | UserMessage]
+
+
+class Data(BaseModel):
+    """POST input data for the chat endpoint."""
+
+    model: str
+    messages: Messages

@@ -3,4 +3,4 @@
 from .cli import app as cli
 from .rest import api
 
-__all__ = ["api", "cli"]
+__all__ = ["cli", "api"]

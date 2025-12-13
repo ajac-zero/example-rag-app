@@ -6,7 +6,7 @@ from openai.types.chat.chat_completion_chunk import (
 )
 from qdrant_client.http.models import QueryResponse, ScoredPoint
 
-from rag.agent import Agent
+from rag.agent import Rag
 from rag.components.chat import OpenAIChat
 from rag.components.search import QdrantSearch
 from rag.components.embed import OpenAIEmbed
@@ -34,7 +34,7 @@ def qdrant_search():
 
 @pytest.fixture(scope="module")
 def agent(openai_chat: OpenAIChat, qdrant_search: QdrantSearch, openai_embed: OpenAIEmbed):
-    agent = Agent(model="test")
+    agent = Rag(model="test")
     agent.chat = openai_chat
     agent.search = qdrant_search
     agent.embed = openai_embed
