@@ -6,11 +6,13 @@ This module contains the REST API logic that exposes the Agent through HTTP requ
 import json
 import os
 from collections.abc import AsyncGenerator
+from pathlib import Path
 
 import httpx
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 
 from rag.agent import Rag
 from rag.config import settings
@@ -68,6 +70,11 @@ async def send_messages(data: Data, stream: bool = False):  # noqa: ANN201
             buffer += chunk
 
         return JSONResponse({"response": buffer})
+
+
+if Path("rag-ui/dist").exists():
+    static = StaticFiles(directory="rag-ui/dist", html=True)
+    app.mount("/", static, name="gui")
 
 
 def run_api() -> None:  # pragma: no cover

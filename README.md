@@ -25,6 +25,7 @@ It includes the following:
 - ⚙️ **Pydantic-Settings** – Configures the application using environment variables.
 - 🚚 **UV** – A project and dependency manager.
 - 🏍️ **Redis** – An in-memory database for semantic caching.
+- 🎨 **Rag-UI** – A modern web interface built with Vite, Tailwind CSS v4, and shadcn components, served as static files from the FastAPI backend.
 - 🧹 **Ruff** – A linter and formatter.
 - ✅ **Mypy** – A static type checker.
 - 📍 **Pydeps** – A dependency graph generator.
