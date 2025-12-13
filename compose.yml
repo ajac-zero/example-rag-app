@@ -10,6 +10,8 @@ services:
     depends_on:
       - litellm
       - qdrant
+    profiles:
+      - prod
 
   qdrant:
     image: qdrant/qdrant:latest
@@ -17,36 +19,25 @@ services:
       - 6333:6333
       - 6334:6334
     volumes:
-      - ./infra/qdrant/volume/:/qdrant/storage:z
+      - ./qdrant/volume/:/qdrant/storage:z
+    profiles:
+      - infra
+      - prod
 
   litellm:
     image: ghcr.io/berriai/litellm:main-latest
     ports:
       - 4000:4000
     volumes:
-      - ./infra/litellm/config.yml:/app/litellm_config.yml
+      - ./litellm-config.yml:/app/litellm-config.yml
+    command: ["--config", "/app/litellm-config.yml"]
+    env_file: .env
     environment:
-      # Models
-      GROQ_API_KEY: ${GROQ_API_KEY}
-      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT}
-      AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY}
-      AZURE_OPENAI_API_VERSION: ${AZURE_OPENAI_API_VERSION}
-
-      # Logging
-      LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY}
-      LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY}
-      LANGFUSE_HOST: ${LANGFUSE_HOST}
-
-      # Caching
-      REDIS_URL: ${REDIS_URL:-redis://:myredissecret@redis:6379}
-    command: ["--config", "/app/litellm_config.yml"]
-    depends_on:
-      - mockai
-
-  mockai:
-    image: ajaczero/mock-ai:latest
-    ports:
-      - 8100:8100
+      LANGFUSE_HOST: http://langfuse:3000
+      REDIS_URL: redis://:myredissecret@redis:6379
+    profiles:
+      - infra
+      - prod
 
 include:
-  - infra/langfuse/compose.yml
+  - https://github.com/langfuse/langfuse.git

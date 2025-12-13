@@ -9,11 +9,13 @@ import json
 import os
 from collections.abc import AsyncGenerator
 
+import httpx
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse, StreamingResponse
 
 from rag.agent import Agent
+from rag.config import settings
 
 from .models import BaseModel, Messages
 
@@ -27,7 +29,22 @@ class Data(BaseModel):
     messages: Messages
 
 
-@app.post("/chat")
+@app.get("/api/models")
+async def get_models() -> JSONResponse:
+    """Returns a list of available models."""
+    async with httpx.AsyncClient() as client:
+        response = await client.get(f"{settings.openai_url}v1/model/info")
+        body = response.json()
+
+    model_list = [
+        model["model_name"]
+        for model in body["data"]
+        if model["model_info"]["mode"] == "chat"
+    ]
+    return JSONResponse({"data": model_list})
+
+
+@app.post("/api/chat")
 async def send_messages(data: Data, stream: bool = False):  # noqa: ANN201
     """Receives a POST request with a JSON payload following the `Data` model.
 

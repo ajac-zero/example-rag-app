@@ -174,4 +174,4 @@ cython_debug/
 .pypirc
 
 # Qdrant stuff
-infra/qdrant/volume
+qdrant/volume

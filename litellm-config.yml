@@ -1,0 +1,16 @@
+model_list:
+  - model_name: voyage-3.5-lite
+    litellm_params:
+      model: voyage/voyage-3.5-lite
+      api_key: os.environ/VOYAGE_API_KEY
+  - model_name: groq-llama3-8b-8192
+    litellm_params:
+      model: groq/openai/gpt-oss-120b
+      api_key: "os.environ/GROQ_API_KEY"
+
+litellm_settings:
+  success_callback: ["langfuse"]
+  cache: true
+  cache_params:
+    type: redis
+    namespace: "litellm.caching.caching"

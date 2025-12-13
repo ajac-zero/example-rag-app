@@ -16,11 +16,11 @@ __all__ = ["get_openai_chat", "get_openai_embed", "get_qdrant"]
 
 
 class Settings(BaseSettings):
-    qdrant_collection: str = "Wikipedia"
+    qdrant_collection: str = "my-collection"
     qdrant_url: HttpUrl = HttpUrl("http://localhost:6333")
     qdrant_api_key: str | None = None
 
-    openai_embedding_model: str = "text-embedding-3-large"
+    openai_embedding_model: str = "voyage-3.5-lite"
     openai_url: HttpUrl = HttpUrl("http://localhost:4000")
     openai_api_key: str = "None"
 

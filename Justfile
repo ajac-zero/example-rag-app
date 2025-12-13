@@ -10,7 +10,7 @@ run entrypoint *args:
 # Start compose containers in the background
 scaffold:
   @echo "Scaffolding infrastructure..."
-  @docker compose up -d
+  @docker compose --profile infra up -d
 
 # Remove compose containers from the background
 teardown:
