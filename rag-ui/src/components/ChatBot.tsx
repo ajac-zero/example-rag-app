@@ -143,44 +143,56 @@ export default function ChatBot() {
       </div>
 
       <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3 scroll-smooth">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex animate-in fade-in slide-in-from-bottom-2 gap-3 items-start ${
-              message.role === 'user' ? 'justify-end' : 'justify-start'
-            }`}
-          >
-            {message.role === 'assistant' && (
-              <Avatar className="size-8 flex-shrink-0">
-                <AvatarFallback className="bg-muted">
-                  <Bot className="size-4" />
-                </AvatarFallback>
-              </Avatar>
-            )}
+        {messages.map((message) => {
+          // Skip empty assistant messages while loading
+          if (message.role === 'assistant' && message.content === '' && isLoading) {
+            return null;
+          }
+
+          return (
             <div
-              className={`px-4 py-2 rounded-lg ${
-                message.role === 'user'
-                  ? 'max-w-xs lg:max-w-md bg-primary text-primary-foreground rounded-br-none'
-                  : 'max-w-2xl lg:max-w-4xl bg-muted text-foreground rounded-bl-none'
+              key={message.id}
+              className={`flex animate-in fade-in slide-in-from-bottom-2 gap-3 items-start ${
+                message.role === 'user' ? 'justify-end' : 'justify-start'
               }`}
             >
-              {message.role === 'assistant' ? (
-                <MessageResponse className="text-sm">{message.content}</MessageResponse>
-              ) : (
-                <p className="text-sm leading-relaxed break-words">{message.content}</p>
+              {message.role === 'assistant' && (
+                <Avatar className="size-8 flex-shrink-0">
+                  <AvatarFallback className="bg-muted">
+                    <Bot className="size-4" />
+                  </AvatarFallback>
+                </Avatar>
+              )}
+              <div
+                className={`px-4 py-2 rounded-lg ${
+                  message.role === 'user'
+                    ? 'max-w-xs lg:max-w-md bg-primary text-primary-foreground rounded-br-none'
+                    : 'max-w-2xl lg:max-w-4xl bg-muted text-foreground rounded-bl-none'
+                }`}
+              >
+                {message.role === 'assistant' ? (
+                  <MessageResponse className="text-sm">{message.content}</MessageResponse>
+                ) : (
+                  <p className="text-sm leading-relaxed break-words">{message.content}</p>
+                )}
+              </div>
+              {message.role === 'user' && (
+                <Avatar className="size-8 flex-shrink-0">
+                  <AvatarFallback className="bg-primary">
+                    <User className="size-4 text-primary-foreground" />
+                  </AvatarFallback>
+                </Avatar>
               )}
             </div>
-            {message.role === 'user' && (
-              <Avatar className="size-8 flex-shrink-0">
-                <AvatarFallback className="bg-primary">
-                  <User className="size-4 text-primary-foreground" />
-                </AvatarFallback>
-              </Avatar>
-            )}
-          </div>
-        ))}
+          );
+        })}
         {isLoading && (
-          <div className="flex justify-start animate-in fade-in slide-in-from-bottom-2">
+          <div className="flex animate-in fade-in slide-in-from-bottom-2 gap-3 items-start">
+            <Avatar className="size-8 flex-shrink-0">
+              <AvatarFallback className="bg-muted">
+                <Bot className="size-4" />
+              </AvatarFallback>
+            </Avatar>
             <div className="bg-muted text-foreground px-4 py-2 rounded-lg rounded-bl-none flex items-center gap-2">
               <Spinner className="size-4" />
             </div>
