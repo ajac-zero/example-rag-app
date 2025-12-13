@@ -1,4 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
+import { MessageResponse } from './ai-elements/message';
+import { Spinner } from './ui/spinner';
+import { Avatar, AvatarFallback } from './ui/avatar';
+import { User, Bot, Settings, Send } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
+import { Button } from './ui/button';
 
 interface Message {
   id: string;
@@ -124,52 +137,52 @@ export default function ChatBot() {
   };
 
   return (
-    <div className="flex flex-col h-screen max-w-2xl mx-auto bg-card border border-border rounded-lg shadow-lg overflow-hidden">
-      <div className="bg-primary text-primary-foreground px-6 py-4 border-b border-border space-y-3">
+    <div className="flex flex-col h-screen w-screen bg-card overflow-hidden">
+      <div className="bg-primary text-primary-foreground px-6 py-4 border-b border-border">
         <h1 className="text-2xl font-semibold">RAG Chatbot</h1>
-        <div className="flex gap-2">
-          <label htmlFor="model-select" className="text-sm font-medium">
-            Model:
-          </label>
-          <select
-            id="model-select"
-            value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
-            disabled={isLoading}
-            className="flex-1 px-3 py-1 rounded bg-primary-foreground text-primary text-sm focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50"
-          >
-            {models.map((model) => (
-              <option key={model} value={model}>
-                {model}
-              </option>
-            ))}
-          </select>
-        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3 scroll-smooth">
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`flex animate-in fade-in slide-in-from-bottom-2 ${
+            className={`flex animate-in fade-in slide-in-from-bottom-2 gap-3 items-start ${
               message.role === 'user' ? 'justify-end' : 'justify-start'
             }`}
           >
+            {message.role === 'assistant' && (
+              <Avatar className="size-8 flex-shrink-0">
+                <AvatarFallback className="bg-muted">
+                  <Bot className="size-4" />
+                </AvatarFallback>
+              </Avatar>
+            )}
             <div
-              className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+              className={`px-4 py-2 rounded-lg ${
                 message.role === 'user'
-                  ? 'bg-primary text-primary-foreground rounded-br-none'
-                  : 'bg-muted text-foreground rounded-bl-none'
+                  ? 'max-w-xs lg:max-w-md bg-primary text-primary-foreground rounded-br-none'
+                  : 'max-w-2xl lg:max-w-4xl bg-muted text-foreground rounded-bl-none'
               }`}
             >
-              <p className="text-sm leading-relaxed break-words">{message.content}</p>
+              {message.role === 'assistant' ? (
+                <MessageResponse className="text-sm">{message.content}</MessageResponse>
+              ) : (
+                <p className="text-sm leading-relaxed break-words">{message.content}</p>
+              )}
             </div>
+            {message.role === 'user' && (
+              <Avatar className="size-8 flex-shrink-0">
+                <AvatarFallback className="bg-primary">
+                  <User className="size-4 text-primary-foreground" />
+                </AvatarFallback>
+              </Avatar>
+            )}
           </div>
         ))}
         {isLoading && (
           <div className="flex justify-start animate-in fade-in slide-in-from-bottom-2">
-            <div className="bg-muted text-foreground px-4 py-2 rounded-lg rounded-bl-none">
-              <p className="text-sm animate-pulse">Thinking...</p>
+            <div className="bg-muted text-foreground px-4 py-2 rounded-lg rounded-bl-none flex items-center gap-2">
+              <Spinner className="size-4" />
             </div>
           </div>
         )}
@@ -178,7 +191,7 @@ export default function ChatBot() {
 
       <form
         onSubmit={handleSendMessage}
-        className="flex gap-2 px-6 py-4 bg-card border-t border-border"
+        className="flex gap-2 px-6 py-4 bg-card border-t border-border items-center"
       >
         <input
           type="text"
@@ -188,12 +201,37 @@ export default function ChatBot() {
           disabled={isLoading}
           className="flex-1 px-4 py-2 rounded-full bg-input border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
         />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              disabled={isLoading}
+            >
+              <Settings className="size-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Model</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {models.map((model) => (
+              <DropdownMenuItem
+                key={model}
+                onClick={() => setSelectedModel(model)}
+                className={selectedModel === model ? 'bg-accent' : ''}
+              >
+                {model}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
         <button
           type="submit"
           disabled={isLoading}
           className="px-6 py-2 bg-primary text-primary-foreground rounded-full font-medium hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed transition-opacity"
         >
-          Send
+          <Send className="size-4" />
         </button>
       </form>
     </div>

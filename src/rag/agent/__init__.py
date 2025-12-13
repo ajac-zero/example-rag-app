@@ -137,7 +137,7 @@ class Agent:
         """Send messages to the LLM to generate a response.
 
         If the LLM responds with a tool call, execute the tool and
-        append the result to the messages list.
+        append the result to the messages list, then recursively generate again.
 
         Args:
             messages (Messages): The list of messages to send to the LLM. Each message
@@ -176,3 +176,8 @@ class Agent:
                     )
 
         messages.extend(new_messages)
+
+        # Recursively generate if the last message is a tool result
+        if messages and messages[-1]["role"] == "tool":
+            async for chunk in self.generate(messages, **kwargs):
+                yield chunk

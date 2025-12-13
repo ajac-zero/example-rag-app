@@ -5,7 +5,7 @@ the JSON payloads sent to the REST API. These models MUST be
 respected by the request of they will be rejected.
 """
 
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, RootModel
 
@@ -25,8 +25,8 @@ class ToolCall(BaseModel):
 
 class AssistantMessage(BaseModel):
     role: Literal["assistant"]
-    content: str | None
-    tool_calls: list[ToolCall] | None
+    content: str | None = None
+    tool_calls: list[ToolCall] | None = None
 
 
 class ToolMessage(BaseModel):
@@ -46,6 +46,9 @@ class SystemMessage(BaseModel):
 
 
 class Messages(RootModel):
-    """Messages represents a list of UserMessage, AssistantMessage, ToolMessage."""
+    """Messages represents a list of UserMessage, AssistantMessage, ToolMessage, and SystemMessage.
+    
+    Supports messages from the AI SDK (ai library) and standard OpenAI-compatible formats.
+    """
 
     root: list[SystemMessage | AssistantMessage | ToolMessage | UserMessage]
